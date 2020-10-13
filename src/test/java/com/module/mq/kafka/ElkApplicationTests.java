@@ -6,8 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class KafkaApplicationTests {
-    Logger logger = LoggerFactory.getLogger(KafkaApplicationTests.class);
+class ElkApplicationTests {
+    Logger logger = LoggerFactory.getLogger(ElkApplicationTests.class);
+
     @Test
     void contextLoads() {
         System.out.println("hello");

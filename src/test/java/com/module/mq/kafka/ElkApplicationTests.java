@@ -1,5 +1,7 @@
 package com.module.mq.kafka;
 
+import com.module.mq.es.ESOperator;
+import com.module.mq.kafka.log.KFKStreamProcessor;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +20,8 @@ class ElkApplicationTests {
         logger.info("hello !!! my name is lizhuangjie");
     }
 
-    @Autowired ESOperator esOperator;
+    @Autowired
+    ESOperator esOperator;
 
     @Test
     void testCreateIndex() throws IOException {
@@ -68,5 +71,12 @@ class ElkApplicationTests {
     @Test
     void testSearchDocument() throws IOException {
         esOperator.searchDocument();
+    }
+
+    @Autowired
+    KFKStreamProcessor stream;
+    @Test
+    void testOfficialKafkaStream(){
+        stream.officialKafkaStream1();
     }
 }

@@ -1,4 +1,4 @@
-package com.module.mq.kafka;
+package com.module.mq.es;
 
 import com.alibaba.fastjson.JSON;
 import org.elasticsearch.action.bulk.BulkRequest;

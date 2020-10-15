@@ -1,4 +1,4 @@
-package com.module.mq.kafka;
+package com.module.mq.es;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

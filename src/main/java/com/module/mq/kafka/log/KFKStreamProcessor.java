@@ -1,19 +1,22 @@
 package com.module.mq.kafka.log;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.*;
-import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.ProcessorSupplier;
 import org.apache.kafka.streams.processor.PunctuationType;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.KeyValueStore;
+import org.apache.kafka.streams.state.Stores;
 import org.springframework.stereotype.Component;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Locale;
@@ -23,12 +26,21 @@ import java.util.concurrent.CountDownLatch;
 @Component
 public class KFKStreamProcessor {
 
-    public static void officialKafkaStream1() {
+    public static Properties initKafkaStream(){
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "official-kfk-stream-app");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.21.128:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        props.putIfAbsent(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
+        // setting offset reset to earliest so that we can re-run the demo code with the same pre-loaded data
+        props.putIfAbsent(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+        return props;
+    }
+
+    public static void officialKafkaStream1() {
+        Properties props = initKafkaStream();
 
         StreamsBuilder builder = new StreamsBuilder();
         KStream<String, String> textLines = builder.stream("streams-plaintext-input");
@@ -44,7 +56,57 @@ public class KFKStreamProcessor {
 
     //processor demo
     public static void officialKafkaStream2() {
+
+        Properties props = initKafkaStream();
+
         final Topology builder = new Topology();
+        builder.addSource("Source", "streams-plaintext-input");
+        builder.addProcessor("Process", new MyProcessorSupplier(), "Source");
+        builder.addStateStore(Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore("Counts"), Serdes.String(), Serdes.Integer()), "Process");
+        builder.addSink("Sink", "streams-wordcount-output", "Process");
+
+        KafkaStreams kafkaStreams = new KafkaStreams(builder, props);
+        afterCare(kafkaStreams);
+    }
+
+    //temperature Demo
+    public static void officialKafkaStream3() {
+        Properties props = initKafkaStream();
+        //threshold used for filtering max temperature values
+        final int temperature_threshold = 20;
+        //window size within which the filtering is applied
+        final int temperature_window_size = 5;
+
+        final StreamsBuilder builder = new StreamsBuilder();
+        final KStream<String, String> source = builder.stream("iot-temperature");
+        final KStream<Windowed<String>, String> max = source
+                //temperature values are sent without a key(null), so in order
+                //to group and reduce them, a key is needed("temp" has been chosen)
+                .selectKey((key, value) -> "temp")
+                .groupByKey()
+                .windowedBy(TimeWindows.of(Duration.ofSeconds(temperature_window_size)))
+                .reduce(((value1, value2) -> {
+                    if(Integer.parseInt(value1) > Integer.parseInt(value2)){
+                        return value1;
+                    }else{
+                        return value2;
+                    }
+                }))
+                .toStream()
+                .filter((key, value) -> Integer.parseInt(value) > temperature_threshold);
+
+        final Serde<Windowed<String>> windowedSerde = WindowedSerdes.timeWindowedSerdeFrom(String.class);
+
+        //need to override key serde to windowed<String> type
+        max.to("iot-temperature-max", Produced.with(windowedSerde, Serdes.String()));
+
+        afterCare(new KafkaStreams(builder.build(), props));
+    }
+
+    //page view typed demo
+    public static void officialKafkaStream4() {
+        Properties props = initKafkaStream();
+        props.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, Jsontime)
     }
 
     static class MyProcessorSupplier implements ProcessorSupplier<String, String> {
@@ -113,14 +175,6 @@ public class KFKStreamProcessor {
         }
 
         System.exit(0);
-    }
-
-    public void customKafkaStream() {
-        Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "custom-kfk-stream-app");
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.21.128:9092");
-
-
     }
 
     public void processHttpRequest() {

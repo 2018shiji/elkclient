@@ -9,7 +9,7 @@ import java.util.Date;
  * where: 设备环境、网络环境、业务环境
  * what: 事件标识、事件参数
  */
-public class LogEvent {
+public class LogEventFormat {
     private String caller;
     private Date createTime;
     private String environment;

@@ -9,7 +9,8 @@ public class PageViewUntypedDemo {
         final Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-pageview-untyped");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.21.128:9092");
-        props.put(StreamsConfig.)
+        props.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, );
+        props.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, )
     }
 
 }

@@ -11,6 +11,7 @@ import java.util.concurrent.Future;
 
 public class Producer {
 
+
     private static Properties getProducerProps(){
         Properties props = new Properties();
         props.put("bootstrap.servers", "192.168.21.128:9092");

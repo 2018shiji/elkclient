@@ -4,6 +4,7 @@ import org.apache.kafka.streams.StreamsConfig;
 
 import java.util.Properties;
 
+
 public class PageViewUntypedDemo {
     public static void main(final String[] args) throws Exception {
         final Properties props = new Properties();

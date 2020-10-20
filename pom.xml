@@ -8,10 +8,10 @@
         <version>2.3.3.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.module.mq</groupId>
-    <artifactId>kafka</artifactId>
+    <groupId>com.module</groupId>
+    <artifactId>elkclient</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>kafka</name>
+    <name>elkclient</name>
     <description>mq project of kafka</description>
 
     <properties>

@@ -1,10 +1,8 @@
-package com.module.mq;
+package com.module;
 
-import com.module.mq.kafka.log.KFKStreamProcessor;
+import com.module.kafka.log.KFKStreamProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.io.IOException;
 
 /**
  * https://www.cnblogs.com/balloon72/p/13177872.html
@@ -19,7 +17,7 @@ public class ElkApplication {
     public static void main(String[] args) {
         SpringApplication.run(ElkApplication.class, args);
 
-        KFKStreamProcessor.officialKafkaStream2();
+        KFKStreamProcessor.officialKafkaStream1();
 
     }
 

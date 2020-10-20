@@ -1,7 +1,7 @@
-package com.module.mq.kafka;
+package com.module.kafka;
 
-import com.module.mq.kafka.log.LogOutput;
-import com.module.mq.kafka.log.LoggerUtils;
+import com.module.kafka.log.LogOutput;
+import com.module.kafka.log.LoggerUtils;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.springframework.boot.test.context.SpringBootTest;

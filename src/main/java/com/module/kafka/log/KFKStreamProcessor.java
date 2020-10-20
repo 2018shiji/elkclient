@@ -1,4 +1,4 @@
-package com.module.mq.kafka.log;
+package com.module.kafka.log;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serde;
@@ -101,12 +101,6 @@ public class KFKStreamProcessor {
         max.to("iot-temperature-max", Produced.with(windowedSerde, Serdes.String()));
 
         afterCare(new KafkaStreams(builder.build(), props));
-    }
-
-    //page view typed demo
-    public static void officialKafkaStream4() {
-        Properties props = initKafkaStream();
-        props.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, Jsontime)
     }
 
     static class MyProcessorSupplier implements ProcessorSupplier<String, String> {

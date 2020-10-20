@@ -1,4 +1,4 @@
-package com.module.mq.es;
+package com.module.es;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;

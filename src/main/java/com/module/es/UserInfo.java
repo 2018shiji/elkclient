@@ -1,4 +1,4 @@
-package com.module.mq.es;
+package com.module.es;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

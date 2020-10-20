@@ -1,4 +1,4 @@
-package com.module.mq.kafka.admin;
+package com.module.kafka.admin;
 
 import org.apache.kafka.clients.admin.KafkaAdminClient;
 

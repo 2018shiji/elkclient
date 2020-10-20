@@ -1,7 +1,7 @@
-package com.module.mq.kafka;
+package com.module.kafka;
 
-import com.module.mq.es.ESOperator;
-import com.module.mq.kafka.log.KFKStreamProcessor;
+import com.module.kafka.log.KFKStreamProcessor;
+import com.module.es.ESOperator;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

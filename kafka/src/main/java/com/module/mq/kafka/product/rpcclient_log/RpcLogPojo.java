@@ -20,6 +20,7 @@ public class RpcLogPojo {
     private String logClass;
     private String message;
 
+
     public RpcLogPojo(List<String> logMarkItems, String message){
         this.projectName = logMarkItems.get(0);
         this.dateTime = logMarkItems.get(1);

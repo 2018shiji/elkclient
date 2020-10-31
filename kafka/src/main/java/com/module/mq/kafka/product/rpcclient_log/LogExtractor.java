@@ -12,7 +12,7 @@ public class LogExtractor {
         this.logRecord = logRecord;
     }
 
-    public RpcLogPojo getRpcLogPojo(){
+    public LogPojo getRpcLogPojo(){
         if(!logRecord.contains("msg"))
             return null;
         String logMark = logRecord.substring(0, logRecord.indexOf("msg")-2);
@@ -29,6 +29,6 @@ public class LogExtractor {
         String logMsg = logRecord.substring(logRecord.indexOf("msg")+4);
         System.out.println(logMsg);
 
-        return new RpcLogPojo(logMarkItems, logMsg);
+        return new LogPojo(logMarkItems, logMsg);
     }
 }

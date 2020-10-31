@@ -7,12 +7,6 @@
         </encoder>
     </appender>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
     <!-- This is the kafkaAppender -->
     <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">
         <encoder>
@@ -34,51 +28,41 @@
         <producerConfig>bootstrap.servers=192.168.21.128:9092</producerConfig>
 
         <!-- this is the fallback appender if kafka is not available. -->
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="CONSOLE" />
     </appender>
 
     <!--不同业务逻辑的日志打印到不同文件-->
-<!--    <appender name="database-sql-appender">-->
-<!--        <File>D:/log/database-sql.log</File>-->
-<!--        <append>true</append>-->
-<!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
-<!--            <level>INFO</level>-->
-<!--            <onMatch>ACCEPT</onMatch>-->
-<!--            <onMismatch>DENY</onMismatch>-->
-<!--        </filter>-->
-<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-<!--            <maxHistory>12</maxHistory>-->
-<!--        </rollingPolicy>-->
-<!--        <encoder charset="UTF-8">-->
-<!--            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %level [%thread] %file:%line - %msg%n</pattern>-->
-<!--            <charset>UTF-8</charset>-->
-<!--        </encoder>-->
-<!--    </appender>-->
+    <appender name="sql-output-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>D:/log/sql-output.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>sql-output-%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>12</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %level [%thread] %file:%line - %msg%n</pattern>
+        </encoder>
+    </appender>
 
-<!--    <appender name="output-file-appender">-->
-<!--        <File>D:/log/output-file.log</File>-->
-<!--        <append>true</append>-->
-<!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
-<!--            <level>INFO</level>-->
-<!--            <onMatch>ACCEPT</onMatch>-->
-<!--            <onMismatch>DENY</onMismatch>-->
-<!--        </filter>-->
-<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-<!--            <maxHistory>12</maxHistory>-->
-<!--        </rollingPolicy>-->
-<!--        <encoder charset="UTF-8">-->
-<!--            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %level [%thread] %file:%line - %msg%n</pattern>-->
-<!--            <charset>UTF-8</charset>-->
-<!--        </encoder>-->
-<!--    </appender>-->
+    <appender name="file-output-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>D:/log/file-output.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>file-output-%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>12</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %level [%thread] %file:%line - %msg%n</pattern>
+        </encoder>
+    </appender>
 
-<!--    <logger name="database-sql" additivity="false" level="INFO">-->
-<!--        <appender-ref ref="database-sql-appender"/>-->
-<!--    </logger>-->
+    <logger name="sql-output" additivity="false" level="INFO">
+        <appender-ref ref="sql-output-appender"/>
+    </logger>
 
-<!--    <logger name="output-file" additivity="false" level="INFO">-->
-<!--        <appender-ref ref="output-file-appender"/>-->
-<!--    </logger>-->
+    <logger name="file-output" additivity="false" level="INFO">
+        <appender-ref ref="file-output-appender"/>
+    </logger>
 
     <root level="info">
         <appender-ref ref="kafkaAppender" />

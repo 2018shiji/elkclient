@@ -8,10 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
-@ContextConfiguration("classpath:/application.properties")
 public class LogTest {
-    Logger DB_SQL_LOG = LoggerUtils.Logger(LogOutput.DB_SQL);
-    Logger OUTPUT_FILE_LOG = LoggerUtils.Logger(LogOutput.OUTPUT_FILE);
+    Logger DB_SQL_LOG = LoggerUtils.Logger(LogOutput.SQL_OUTPUT);
+    Logger OUTPUT_FILE_LOG = LoggerUtils.Logger(LogOutput.FILE_OUTPUT);
 
     @Test
     public void testLoggerOutput() {
